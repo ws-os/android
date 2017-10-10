@@ -132,7 +132,7 @@ public class MainApp extends MultiDexApplication {
                 Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
                 m.invoke(null);
             } catch(Exception e){
-                e.printStackTrace();
+                Log_OC.d("Debug", "Failed to disable uri exposure");
             }
         }
 
