@@ -2019,7 +2019,7 @@ public class FileDisplayActivity extends HookActivity
         Intent showDetailsIntent = new Intent(this, PreviewImageActivity.class);
         showDetailsIntent.putExtra(EXTRA_FILE, file);
         showDetailsIntent.putExtra(EXTRA_ACCOUNT, getAccount());
-        if (showPreview && file.isDown() && !file.isDownloading()) {
+        if (showPreview) {
             startActivity(showDetailsIntent);
         } else {
             FileOperationsHelper fileOperationsHelper = new FileOperationsHelper(this);
@@ -2038,7 +2038,7 @@ public class FileDisplayActivity extends HookActivity
         showDetailsIntent.putExtra(EXTRA_ACCOUNT, getAccount());
         showDetailsIntent.putExtra(PreviewImageActivity.EXTRA_VIRTUAL_TYPE, type);
 
-        if (showPreview && file.isDown() && !file.isDownloading()) {
+        if (showPreview) {
             startActivity(showDetailsIntent);
         } else {
             FileOperationsHelper fileOperationsHelper = new FileOperationsHelper(this);
@@ -2078,7 +2078,7 @@ public class FileDisplayActivity extends HookActivity
      * @param file Text {@link OCFile} to preview.
      */
     public void startTextPreview(OCFile file, boolean showPreview) {
-        if (showPreview && file.isDown() && !file.isDownloading()) {
+        if (showPreview) {
             Bundle args = new Bundle();
             args.putParcelable(EXTRA_FILE, file);
             args.putParcelable(EXTRA_ACCOUNT, getAccount());
