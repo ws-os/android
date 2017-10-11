@@ -635,9 +635,11 @@ public abstract class DrawerActivity extends ToolbarActivity implements DisplayU
 
                 // activate second/end account avatar
                 if (mAvatars[1] != null) {
+                    View accountEndView = findNavigationViewChildById(R.id.drawer_account_end);
+                    accountEndView.setTag(mAvatars[1].name);
+
                     DisplayUtils.setAvatar(mAvatars[1], this,
-                            mOtherAccountAvatarRadiusDimension, getResources(), getStorageManager(),
-                            findNavigationViewChildById(R.id.drawer_account_end));
+                            mOtherAccountAvatarRadiusDimension, getResources(), getStorageManager(), accountEndView);
                     mAccountEndAccountAvatar.setVisibility(View.VISIBLE);
                 } else {
                     mAccountEndAccountAvatar.setVisibility(View.GONE);
@@ -645,9 +647,11 @@ public abstract class DrawerActivity extends ToolbarActivity implements DisplayU
 
                 // activate third/middle account avatar
                 if (mAvatars[2] != null) {
+                    View accountMiddleView = findNavigationViewChildById(R.id.drawer_account_middle);
+                    accountMiddleView.setTag(mAvatars[2].name);
+
                     DisplayUtils.setAvatar(mAvatars[2], this,
-                            mOtherAccountAvatarRadiusDimension, getResources(), getStorageManager(),
-                            findNavigationViewChildById(R.id.drawer_account_middle));
+                            mOtherAccountAvatarRadiusDimension, getResources(), getStorageManager(), accountMiddleView);
                     mAccountMiddleAccountAvatar.setVisibility(View.VISIBLE);
                 } else {
                     mAccountMiddleAccountAvatar.setVisibility(View.GONE);
@@ -743,9 +747,11 @@ public abstract class DrawerActivity extends ToolbarActivity implements DisplayU
                 username.setText(AccountUtils.getAccountUsername(account.name));
             }
 
+            View currentAccountView = findNavigationViewChildById(R.id.drawer_current_account);
+            currentAccountView.setTag(account.name);
+
             DisplayUtils.setAvatar(account, this,
-                    mCurrentAccountAvatarRadiusDimension, getResources(), getStorageManager(),
-                    findNavigationViewChildById(R.id.drawer_current_account));
+                    mCurrentAccountAvatarRadiusDimension, getResources(), getStorageManager(), currentAccountView);
 
             // check and show quota info if available
             getAndDisplayUserQuota();
