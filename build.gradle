@@ -14,7 +14,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
         classpath 'com.google.gms:google-services:3.0.0'
     }
 }
@@ -30,7 +30,7 @@ configurations.all {
 }
 
 ext {
-    supportLibraryVersion = '25.4.0'
+    supportLibraryVersion = '26.0.1'
     googleLibraryVersion = '10.2.4'
 
     travisBuild = System.getenv("TRAVIS") == "true"
@@ -64,7 +64,7 @@ android {
         javaMaxHeapSize "4g"
     }
 
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
@@ -194,7 +194,7 @@ dependencies {
     implementation 'com.github.tobiasKaminsky:android-floating-action-button:1.10.2'
     implementation 'com.google.code.findbugs:annotations:2.0.1'
     implementation 'commons-io:commons-io:2.5'
-    implementation 'com.github.evernote:android-job:v1.1.11'
+    implementation 'com.github.evernote:android-job:v1.2.0'
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
