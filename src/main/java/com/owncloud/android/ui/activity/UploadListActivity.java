@@ -230,12 +230,6 @@ public class UploadListActivity extends FileActivity implements UploadListFragme
                 uploadListFragment.updateUploads();
                 break;
 
-            case R.id.action_clear_finished_uploads:
-                storageManager = new UploadsStorageManager(getContentResolver(), getApplicationContext());
-                storageManager.clearAllFinishedButNotDelayedUploads();
-                uploadListFragment.updateUploads();
-                break;
-
             case R.id.action_force_rescan:
                 new JobRequest.Builder(FilesSyncJob.TAG)
                         .setExact(1_000L)
