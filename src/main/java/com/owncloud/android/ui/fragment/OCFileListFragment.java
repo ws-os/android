@@ -53,6 +53,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -106,6 +107,7 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -510,6 +512,34 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
         updateFooter();
     }
 
+    @Override
+    public void onShareIconClick(OCFile file) {
+        shareFile(file);
+    }
+
+    @Override
+    public void onOverflowIconClick(View view, OCFile file) {
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+        popup.inflate(R.menu.file_actions_menu);
+        FileMenuFilter mf = new FileMenuFilter(
+                mAdapter.getFiles().size(),
+                Collections.singleton(file),
+                ((FileActivity) getActivity()).getAccount(),
+                mContainerActivity,
+                getActivity(),
+                true
+        );
+        mf.filter(popup.getMenu(), true);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ArrayList<OCFile> checkedFiles = new ArrayList<>(Collections.singletonList(file));
+                return onFileActionChosen(item.getItemId(), checkedFiles);
+            }
+        });
+        popup.show();
+    }
+
     /**
      * Handler for multiple selection mode.
      *
@@ -629,9 +659,10 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
                     checkedFiles,
                     ((FileActivity) getActivity()).getAccount(),
                     mContainerActivity,
-                    getActivity()
+                    getActivity(),
+                    false
             );
-            mf.filter(menu);
+            mf.filter(menu, false);
             return true;
         }
 
@@ -640,7 +671,8 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
          */
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return onFileActionChosen(item.getItemId());
+            ArrayList<OCFile> checkedFiles = mAdapter.getCheckedItems(getListView());
+            return onFileActionChosen(item.getItemId(), checkedFiles);
         }
 
         /**
@@ -899,10 +931,10 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
      * Start the appropriate action(s) on the currently selected files given menu selected by the user.
      *
      * @param menuId Identifier of the action menu selected by the user
+     * @param checkedFiles List of files selected by the user on which the action should be performed
      * @return 'true' if the menu selection started any action, 'false' otherwise.
      */
-    public boolean onFileActionChosen(int menuId) {
-        final ArrayList<OCFile> checkedFiles = mAdapter.getCheckedItems(getListView());
+    public boolean onFileActionChosen(int menuId, ArrayList<OCFile> checkedFiles) {
         if (checkedFiles.size() <= 0) {
             return false;
         }
@@ -912,11 +944,7 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
             OCFile singleFile = checkedFiles.get(0);
             switch (menuId) {
                 case R.id.action_share_file: {
-                    if(singleFile.isSharedWithMe() && !singleFile.canReshare()){
-                        Snackbar.make(getView(), R.string.resharing_is_not_allowed, Snackbar.LENGTH_LONG).show();
-                    } else {
-                        mContainerActivity.getFileOperationsHelper().showShareFile(singleFile);
-                    }
+                    shareFile(singleFile);
                     return true;
                 }
                 case R.id.action_open_file_with: {
@@ -1010,16 +1038,24 @@ public class OCFileListFragment extends ExtendedListFragment implements OCFileLi
                 getActivity().startActivityForResult(action, FileDisplayActivity.REQUEST_CODE__COPY_FILES);
                 return true;
             }
-            case R.id.action_select_all: {
+            case R.id.action_select_all_action_menu: {
                 selectAllFiles(true);
                 return true;
             }
-            case R.id.action_deselect_all: {
+            case R.id.action_deselect_all_action_menu: {
                 selectAllFiles(false);
                 return true;
             }
             default:
                 return false;
+        }
+    }
+
+    private void shareFile(OCFile file) {
+        if(file.isSharedWithMe() && !file.canReshare()){
+            Snackbar.make(getView(), R.string.resharing_is_not_allowed, Snackbar.LENGTH_LONG).show();
+        } else {
+            mContainerActivity.getFileOperationsHelper().showShareFile(file);
         }
     }
 

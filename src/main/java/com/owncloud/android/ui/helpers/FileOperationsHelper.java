@@ -181,11 +181,7 @@ public class FileOperationsHelper {
 
             if (launchables != null && launchables.size() > 0) {
                 try {
-                    mFileActivity.startActivity(
-                            Intent.createChooser(
-                                    openFileWithIntent, mFileActivity.getString(R.string.actionbar_open_with)
-                            )
-                    );
+                    mFileActivity.startActivity(openFileWithIntent);
                 } catch (ActivityNotFoundException anfe) {
                     mFileActivity.showSnackMessage(mFileActivity.getString(R.string.file_list_no_app_for_file_type));
                 }

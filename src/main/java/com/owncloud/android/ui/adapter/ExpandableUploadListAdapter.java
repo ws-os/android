@@ -601,6 +601,10 @@ public class ExpandableUploadListAdapter extends BaseExpandableListAdapter imple
                     case UNKNOWN:
                         status = mParentActivity.getString(R.string.uploads_view_upload_status_unknown_fail);
                         break;
+                    case DELAYED_IN_POWER_SAVE_MODE:
+                        status = mParentActivity.getString(
+                                R.string.uploads_view_upload_status_waiting_exit_power_save_mode);
+                        break;
                     default:
                         status = "New fail result but no description for the user";
                         break;

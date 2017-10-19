@@ -37,7 +37,8 @@ public enum UploadResult {
     DELAYED_FOR_CHARGING(11),
     MAINTENANCE_MODE(12),
     LOCK_FAILED(13),
-    SSL_RECOVERABLE_PEER_UNVERIFIED(14);
+    DELAYED_IN_POWER_SAVE_MODE(14),
+    SSL_RECOVERABLE_PEER_UNVERIFIED(15);
 
     private final int value;
 
@@ -82,6 +83,8 @@ public enum UploadResult {
             case 13:
                 return LOCK_FAILED;
             case 14:
+                return DELAYED_IN_POWER_SAVE_MODE;
+            case 15:
                 return SSL_RECOVERABLE_PEER_UNVERIFIED;
         }
         return null;
@@ -118,6 +121,8 @@ public enum UploadResult {
                 return DELAYED_FOR_WIFI;
             case DELAYED_FOR_CHARGING:
                 return DELAYED_FOR_CHARGING;
+            case DELAYED_IN_POWER_SAVE_MODE:
+                return DELAYED_IN_POWER_SAVE_MODE;
             case MAINTENANCE_MODE:
                 return MAINTENANCE_MODE;
             case SSL_RECOVERABLE_PEER_UNVERIFIED:

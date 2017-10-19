@@ -127,7 +127,7 @@
     <string name="common_yes">Evet</string>
     <string name="common_no">Hayır</string>
     <string name="common_ok">Tamam</string>
-    <string name="common_remove_upload">Yüklemeyi kaldır</string>
+    <string name="common_remove_upload">Yüklemeyi sil</string>
     <string name="common_retry_upload">Yüklemeyi yeniden dene</string>
     <string name="common_cancel_sync">Eşitlemeyi iptal et</string>
     <string name="common_cancel">İptal</string>
@@ -142,7 +142,7 @@
     <string name="about_title">Hakkında</string>
     <string name="change_password">Parola değiştir</string>
     <string name="delete_account">Hesabı kaldır</string>
-    <string name="delete_account_warning">%s hesabı tüm yerel dosyaları ile silinsin mi?\n\nSilme işlemi geri alınamaz.</string>
+    <string name="delete_account_warning">%s hesabı ve tüm yerel dosyalar kaldırılsın mı?\n\nSilme işlemi geri alınamaz.</string>
     <string name="avatar">Avatar</string>
     <string name="active_user">Etkin kullanıcı</string>
     <string name="upload_chooser_title">Şuradan yükle&#8230;</string>
@@ -172,6 +172,7 @@
     <string name="uploads_view_upload_status_service_interrupted">Uygulama sonlandırıldı</string>
     <string name="uploads_view_upload_status_unknown_fail">Bilinmeyen sorun</string>
     <string name="uploads_view_upload_status_waiting_for_wifi">WiFi bağlantısı bekleniyor</string>
+    <string name="uploads_view_upload_status_waiting_exit_power_save_mode">Güç tasarrufu kipinden çıkılması bekleniyor</string>
     <string name="uploads_view_later_waiting_to_upload">Yüklenmeyi bekliyor</string>
     <string name="downloader_download_in_progress_ticker">İndiriliyor&#8230;</string>
     <string name="downloader_download_in_progress_content">%%%1$d İndirilen: %2$s</string>
@@ -202,10 +203,10 @@
     <string name="pass_code_configure_your_pass_code">Parolanızı yazın</string>
     <string name="pass_code_configure_your_pass_code_explanation">Parola uygulama her başlatıldığında sorulacak</string>
     <string name="pass_code_reenter_your_pass_code">Lütfen parolanızı yeniden yazın</string>
-    <string name="pass_code_remove_your_pass_code">Parolanızı kaldırın</string>
+    <string name="pass_code_remove_your_pass_code">Parolanızı silin</string>
     <string name="pass_code_mismatch">Parola ile onayı aynı değil</string>
     <string name="pass_code_wrong">Parola yanlış</string>
-    <string name="pass_code_removed">Parola kaldırıldı</string>
+    <string name="pass_code_removed">Parola silindi</string>
     <string name="pass_code_stored">Parola depolandı</string>
     
     <string name="media_notif_ticker">%1$s müzik oynatıcı</string>
@@ -269,8 +270,8 @@
     <string name="favorite_switch">Çevrimdışı kullanılabilir</string>
     <string name="common_rename">Yeniden adlandır</string>
     <string name="common_remove">Sil</string>
-    <string name="confirmation_remove_file_alert">%1$s silinsin mi?</string>
-    <string name="confirmation_remove_folder_alert">%1$s ve içeriğini silmek istediğinize emin misiniz?</string>
+    <string name="confirmation_remove_file_alert">%1$s dosyasını gerçekten silmek istiyor musunuz?</string>
+    <string name="confirmation_remove_folder_alert">%1$s klasörünü ve içindekileri gerçekten silmek istiyor musunuz?</string>
     <string name="confirmation_remove_local">Yalnız yerel</string>
     <string name="remove_success_msg">Silindi</string>
     <string name="remove_fail_msg">Silinemedi</string>
@@ -526,8 +527,8 @@
 
     <string name="permission_storage_access">Dosya yüklemek ve indirmek için ek izinler gerekli.</string>
     <string name="local_file_not_found_toast">Dosya yerel dosya sisteminde bulunamadı</string>
-    <string name="confirmation_remove_files_alert">Seçilen ögeleri gerçekten silmek istiyor musunuz?</string>
-    <string name="confirmation_remove_folders_alert">Seçilen ögeleri ve içeriklerini gerçekten silmek istiyor musunuz?</string>
+    <string name="confirmation_remove_files_alert">Seçilmiş ögeleri gerçekten silmek istiyor musunuz?</string>
+    <string name="confirmation_remove_folders_alert">Seçilmiş ögeleri ve içindekileri gerçekten silmek istiyor musunuz?</string>
     <string name="maintenance_mode">Sunucu bakım kipinde</string>
     <string name="lock_failed">Dosya kilitlenemedi</string>
 

@@ -133,15 +133,11 @@ public class ReceiveExternalFilesActivity extends FileActivity
 
     private SyncBroadcastReceiver mSyncBroadcastReceiver;
     private boolean mSyncInProgress = false;
-    private boolean mAccountSelected;
-    private boolean mAccountSelectionShowing;
 
     private final static int REQUEST_CODE__SETUP_ACCOUNT = REQUEST_CODE__LAST_SHARED + 1;
 
     private final static String KEY_PARENTS = "PARENTS";
     private final static String KEY_FILE = "FILE";
-    private final static String KEY_ACCOUNT_SELECTED = "ACCOUNT_SELECTED";
-    private final static String KEY_ACCOUNT_SELECTION_SHOWING = "ACCOUNT_SELECTION_SHOWING";
 
     private boolean mUploadFromTmpFile = false;
     private String mSubjectText;
@@ -161,21 +157,12 @@ public class ReceiveExternalFilesActivity extends FileActivity
 
         if (savedInstanceState == null) {
             mParents = new Stack<>();
-            mAccountSelected = false;
-            mAccountSelectionShowing = false;
-
         } else {
             mParents = (Stack<String>) savedInstanceState.getSerializable(KEY_PARENTS);
             mFile = savedInstanceState.getParcelable(KEY_FILE);
-            mAccountSelected = savedInstanceState.getBoolean(KEY_ACCOUNT_SELECTED);
-            mAccountSelectionShowing = savedInstanceState.getBoolean(KEY_ACCOUNT_SELECTION_SHOWING);
         }
 
         super.onCreate(savedInstanceState);
-
-        if (mAccountSelected) {
-            setAccount((Account) savedInstanceState.getParcelable(FileActivity.EXTRA_ACCOUNT));
-        }
 
         // Listen for sync messages
         IntentFilter syncIntentFilter = new IntentFilter(RefreshFolderOperation.
@@ -204,11 +191,6 @@ public class ReceiveExternalFilesActivity extends FileActivity
                 Log_OC.i(TAG, "No ownCloud account is available");
                 DialogNoAccount dialog = new DialogNoAccount();
                 dialog.show(getSupportFragmentManager(), null);
-            } else if (accounts.length > 1 && !mAccountSelected && !mAccountSelectionShowing) {
-                Log_OC.i(TAG, "More than one ownCloud is available");
-                DialogMultipleAccount dialog = new DialogMultipleAccount();
-                dialog.show(getSupportFragmentManager(), null);
-                mAccountSelectionShowing = true;
             } else {
                 if (!savedAccount) {
                     setAccount(accounts[0]);
@@ -224,6 +206,11 @@ public class ReceiveExternalFilesActivity extends FileActivity
         super.setAccount(account, savedAccount);
     }
 
+    private void showAccountChooserDialog() {
+        DialogMultipleAccount dialog = new DialogMultipleAccount();
+        dialog.show(getSupportFragmentManager(), null);
+    }
+
     @Override
     protected void onAccountSet(boolean stateWasRecovered) {
         super.onAccountSet(mAccountWasRestored);
@@ -237,8 +224,6 @@ public class ReceiveExternalFilesActivity extends FileActivity
         super.onSaveInstanceState(outState);
         outState.putSerializable(KEY_PARENTS, mParents);
         outState.putParcelable(KEY_FILE, mFile);
-        outState.putBoolean(KEY_ACCOUNT_SELECTED, mAccountSelected);
-        outState.putBoolean(KEY_ACCOUNT_SELECTION_SHOWING, mAccountSelectionShowing);
         outState.putParcelable(FileActivity.EXTRA_ACCOUNT, getAccount());
 
         Log_OC.d(TAG, "onSaveInstanceState() end");
@@ -307,11 +292,9 @@ public class ReceiveExternalFilesActivity extends FileActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     final ReceiveExternalFilesActivity parent = (ReceiveExternalFilesActivity) getActivity();
-                    parent.setAccount(parent.mAccountManager.getAccountsByType(MainApp.getAccountType())[which]);
+                    parent.setAccount(parent.mAccountManager.getAccountsByType(MainApp.getAccountType())[which], false);
                     parent.onAccountSet(parent.mAccountWasRestored);
                     dialog.dismiss();
-                    parent.mAccountSelected = true;
-                    parent.mAccountSelectionShowing = false;
                 }
             });
             builder.setCancelable(true);
@@ -331,13 +314,6 @@ public class ReceiveExternalFilesActivity extends FileActivity
             }
 
             return adapterAccountList;
-        }
-
-        public void onCancel(DialogInterface dialog) {
-            super.onCancel(dialog);
-            final ReceiveExternalFilesActivity parent = (ReceiveExternalFilesActivity) getActivity();
-            parent.mAccountSelectionShowing = false;
-            parent.finish();
         }
     }
 
@@ -721,11 +697,21 @@ public class ReceiveExternalFilesActivity extends FileActivity
         }
     }
 
+    private void setupActionBarSubtitle() {
+        if (isHaveMultipleAccount()) {
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setSubtitle(getAccount().name);
+            }
+        }
+    }
+
     private void populateDirectoryList() {
         setContentView(R.layout.uploader_layout);
         setupEmptyList();
         setupToolbar();
         ActionBar actionBar = getSupportActionBar();
+        setupActionBarSubtitle();
 
         ListView mListView = (ListView) findViewById(android.R.id.list);
 
@@ -1026,13 +1012,20 @@ public class ReceiveExternalFilesActivity extends FileActivity
         }
     }
 
+    private boolean isHaveMultipleAccount() {
+        return mAccountManager.getAccountsByType(MainApp.getAccountType()).length > 1;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        menu.findItem(R.id.action_sort).setVisible(false);
-        menu.findItem(R.id.action_switch_view).setVisible(false);
-        menu.findItem(R.id.action_sync_account).setVisible(false);
+        inflater.inflate(R.menu.receive_file_menu, menu);
+
+        if (!isHaveMultipleAccount()) {
+            MenuItem switchAccountMenu = menu.findItem(R.id.action_switch_account);
+            switchAccountMenu.setVisible(false);
+        }
+
         return true;
     }
 
@@ -1050,6 +1043,9 @@ public class ReceiveExternalFilesActivity extends FileActivity
                 if ((mParents.size() > 1)) {
                     onBackPressed();
                 }
+                break;
+            case R.id.action_switch_account:
+                showAccountChooserDialog();
                 break;
 
             default:
