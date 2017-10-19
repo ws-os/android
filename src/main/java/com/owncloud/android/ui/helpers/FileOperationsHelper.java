@@ -249,7 +249,6 @@ public class FileOperationsHelper {
                             showNoAppForFileTypeToast(mFileActivity.getApplicationContext());
                         }
                     }
-
                 }
             }).start();
 

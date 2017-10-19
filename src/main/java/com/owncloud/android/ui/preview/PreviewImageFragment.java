@@ -275,9 +275,10 @@ public class PreviewImageFragment extends FileFragment {
                     getFile(),
                     mContainerActivity.getStorageManager().getAccount(),
                     mContainerActivity,
-                    getActivity()
+                    getActivity(),
+                    false
             );
-            mf.filter(menu);
+            mf.filter(menu, true);
         }
 
         // additional restriction for this fragment 
@@ -291,6 +292,13 @@ public class PreviewImageFragment extends FileFragment {
         // additional restriction for this fragment 
         // TODO allow refresh file in PreviewImageFragment
         item = menu.findItem(R.id.action_sync_file);
+        if (item != null) {
+            item.setVisible(false);
+            item.setEnabled(false);
+        }
+
+        // additional restriction for this fragment
+        item = menu.findItem(R.id.action_select_all);
         if (item != null) {
             item.setVisible(false);
             item.setEnabled(false);
@@ -646,6 +654,10 @@ public class PreviewImageFragment extends FileFragment {
             mMultiListHeadline.setText(headline);
             mMultiListMessage.setText(message);
             mMultiListIcon.setImageResource(icon);
+
+            mMultiView.setBackgroundColor(Color.BLACK);
+            mMultiListHeadline.setTextColor(getResources().getColor(R.color.standard_grey));
+            mMultiListMessage.setTextColor(getResources().getColor(R.color.standard_grey));
 
             mMultiListMessage.setVisibility(View.VISIBLE);
             mMultiListIcon.setVisibility(View.VISIBLE);
